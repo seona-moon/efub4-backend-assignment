@@ -10,4 +10,4 @@
 ## 📗 API 문서
 
 [노션 링크]
-https://loving-pirate-b8e.notion.site/8924b7bb61214da4ba8de4963ce5601d?pvs=4
+https://loving-pirate-b8e.notion.site/a13cf996554f49a8a4b923f14d606f1b?v=3230feeb413a463194646df999490506&pvs=4
