@@ -33,9 +33,16 @@ public class AccountController {
 
     @PatchMapping("/profile/{member_id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public AccountResponseDto update(@PathVariable Long member_id, @RequestBody @Valid final AccountUpdateRequestDto requestDto){
+    public AccountResponseDto update(@PathVariable final Long member_id, @RequestBody @Valid final AccountUpdateRequestDto requestDto){
         Long id = accountService.update(member_id,requestDto);
         Account findAccount = accountService.findAccountById(id);
         return AccountResponseDto.from(findAccount);
+    }
+
+    @PatchMapping("/{member_id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String withdraw(@PathVariable Long member_id){
+        accountService.withdraw(member_id);
+        return "삭제가 완료되었습니다.";
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static efub.assignment.community.account.domain.AccountStatus.REGISTERED;
+import static efub.assignment.community.account.domain.AccountStatus.UNREGISTERED;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,5 +54,9 @@ public class Account extends BaseTimeEntity {
         this.password = password;
         this.university = university;
         this.studentId = studentId;
+    }
+
+    public void withdrawAccount(){
+        this.status = AccountStatus.UNREGISTERED;
     }
 }

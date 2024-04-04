@@ -42,4 +42,9 @@ public class AccountService {
         account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword(),requestDto.getUniversity(),requestDto.getStudentId());
         return account.getAccountId();
     }
+
+    public void withdraw(Long member_id){
+        Account account = findAccountById(member_id);
+        account.withdrawAccount();
+    }
 }
