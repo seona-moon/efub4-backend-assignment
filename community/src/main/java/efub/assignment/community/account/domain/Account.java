@@ -46,4 +46,12 @@ public class Account extends BaseTimeEntity {
         this.studentId = studentId;
         this.status = REGISTERED;
     }
+
+    public void updateAccount(String email, String nickname, String password, String university, String studentId) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.university = university;
+        this.studentId = studentId;
+    }
 }
