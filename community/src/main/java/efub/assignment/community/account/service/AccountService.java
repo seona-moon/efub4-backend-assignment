@@ -34,12 +34,24 @@ public class AccountService {
                 .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Account를 찾을 수 없습니다. id="+id));
     }
 
+    @Transactional(readOnly = true)
+    public Account findAccountByEmail(String email){
+        return accountRepository.findByEmail(email);
+    }
+
     public Long update(Long member_id, AccountUpdateRequestDto requestDto){
-        if(existsByEmail(requestDto.getEmail())){
-            throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
+        if(existsByEmail(requestDto.getEmail())){ // 변경하려는 이메일이 이미 등록되어 있는지
+            if(!member_id.equals(findAccountByEmail(requestDto.getEmail()).getAccountId())){  // 존재하는 이메일이 자신의 계정 이메일이 아니면 IllegalArgumentException
+                throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
+            }
         }
         Account account = findAccountById(member_id);
-        account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword(),requestDto.getUniversity(),requestDto.getStudentId());
+        if(requestDto.getEmail()==null || requestDto.getPassword()==null) { // requestbody에 닉네임만 입력한 경우
+            account.updateAccount(requestDto.getNickname());
+        }
+        else{ // requestbody에 이메일, 닉네임, 비밀번호 모두 입력한 경우
+            account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword());
+        }
         return account.getAccountId();
     }
 

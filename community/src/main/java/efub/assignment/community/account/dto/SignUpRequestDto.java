@@ -3,7 +3,6 @@ package efub.assignment.community.account.dto;
 import efub.assignment.community.account.domain.Account;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,7 +18,7 @@ public class SignUpRequestDto {
     private String email;
 
     @NotBlank(message = "비밀번호는 필수입니다.")
-      @Pattern(regexp = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$",
+      @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!.?,])[A-Za-z\\d!.?,]{2,16}$",
               message = "16자 이내의 영문자 및 숫자와 ?,!,.,, 특수문자로 입력해주세요.")
     private String password;
 
@@ -29,7 +28,7 @@ public class SignUpRequestDto {
     @NotBlank(message = "학교는 필수입니다.")
     private String university;
 
-    @NotNull(message = "학번은 필수입니다.")
+    @NotBlank(message = "학번은 필수입니다.")
     private String studentId;
 
     @Builder

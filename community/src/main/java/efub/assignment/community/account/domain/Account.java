@@ -56,6 +56,20 @@ public class Account extends BaseTimeEntity {
         this.studentId = studentId;
     }
 
+
+    // requestbody에 이메일, 닉네임, 비밀번호 모두 입력한 경우
+    public void updateAccount(String email, String nickname, String password) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
+
+    //닉네임만 수정하는 경우
+    //requestbody에 닉네임만 입력한 경우
+    public void updateAccount(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void withdrawAccount(){
         this.status = AccountStatus.UNREGISTERED;
     }
