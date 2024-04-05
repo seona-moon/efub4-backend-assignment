@@ -41,7 +41,7 @@ public class AccountService {
 
     public Long update(Long member_id, AccountUpdateRequestDto requestDto){
         if(existsByEmail(requestDto.getEmail())){ // 변경하려는 이메일이 이미 등록되어 있는지
-            if(!member_id.equals(findAccountByEmail(requestDto.getEmail()).getAccountId())){  // 존재하는 이메일이 자신의 계정 이메일이 아니면 IllegalArgumentException
+            if(!member_id.equals(findAccountByEmail(requestDto.getEmail()).getAccountId())){  // 등록되어있는 이메일이 자신의 계정 이메일이 아니면 IllegalArgumentException "이미 존재하는 email입니다."
                 throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
             }
         }
