@@ -15,7 +15,7 @@ public class Board extends BaseTimeEntity {
     private Long boardId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", updatable = false)
+    @JoinColumn(name = "account_id", updatable = true)
     private Account account;
 
     @Column(nullable = false, length = 50)
@@ -33,6 +33,11 @@ public class Board extends BaseTimeEntity {
         this.boardName = boardName;
         this.boardDescription = boardDescription;
         this.boardNotice = boardNotice;
+    }
+
+    // 게시판의 주인을 수정하는 메소드
+    public void update( Account account){
+        this.account = account;
     }
 
 }
