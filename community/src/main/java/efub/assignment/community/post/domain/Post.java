@@ -4,6 +4,8 @@ package efub.assignment.community.post.domain;
 import efub.assignment.community.account.domain.Account;
 import efub.assignment.community.board.domain.Board;
 import efub.assignment.community.global.entity.BaseTimeEntity;
+import efub.assignment.community.post.dto.PostRequestDto;
+import efub.assignment.community.post.dto.PostUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,5 +45,10 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.writerOpen = writerOpen;
+    }
+
+    public void update(PostUpdateDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 }

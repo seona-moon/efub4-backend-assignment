@@ -5,15 +5,20 @@ import efub.assignment.community.account.domain.Account;
 import efub.assignment.community.account.service.AccountService;
 import efub.assignment.community.board.domain.Board;
 import efub.assignment.community.board.service.BoardService;
+import efub.assignment.community.exception.CustomDeleteException;
+import efub.assignment.community.exception.ErrorCode;
 import efub.assignment.community.post.PostRepository;
 import efub.assignment.community.post.domain.Post;
 import efub.assignment.community.post.dto.PostRequestDto;
+import efub.assignment.community.post.dto.PostUpdateDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static efub.assignment.community.exception.ErrorCode.PERMISSION_REJECTED_USER;
 
 @Service
 @Transactional //해당 범위의 작업들을 하나의 트랜잭션으로 처리
@@ -47,6 +52,20 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id="+postId));
         return post;
+    }
+
+    public Long updatePost(Long post_id, PostUpdateDto dto){
+        Post post = findPostById(post_id);
+        post.update(dto);
+        return post.getPostId();
+    }
+
+    public void deletePost(Long post_id, Long account_id){
+        Post post = findPostById(post_id);
+        if(account_id!=post.getAccount().getAccountId()){
+            throw new CustomDeleteException(PERMISSION_REJECTED_USER);
+        }
+        postRepository.delete(post);
     }
 
 

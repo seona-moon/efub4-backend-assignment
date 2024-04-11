@@ -6,6 +6,7 @@ import efub.assignment.community.post.domain.Post;
 import efub.assignment.community.post.dto.AllPostsResponseDto;
 import efub.assignment.community.post.dto.PostRequestDto;
 import efub.assignment.community.post.dto.PostResponseDto;
+import efub.assignment.community.post.dto.PostUpdateDto;
 import efub.assignment.community.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -56,6 +57,24 @@ public class PostController {
     public PostResponseDto getOnePost(@PathVariable(name="post_id")Long post_id){
         Post post = postService.findPostById(post_id);
         return PostResponseDto.from(post, post.getAccount().getNickname(), post.getBoard().getBoardId());
+    }
+
+    @PutMapping("/posts/{post_id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public PostResponseDto updatePost(@PathVariable(name="post_id")Long post_id,
+                                      @RequestBody @Valid PostUpdateDto dto){
+        Long postId = postService.updatePost(post_id,dto);
+        Post post = postService.findPostById(postId);
+        return PostResponseDto.from(post, post.getAccount().getNickname(), post.getBoard().getBoardId());
+    }
+
+    @DeleteMapping("/posts/{post_id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String deletePost(@PathVariable(name="post_id")Long post_id,
+                           @RequestParam(name="account_id")Long account_id){
+        postService.deletePost(post_id,account_id);
+
+        return "글을 삭제하였습니다.";
     }
 
 
