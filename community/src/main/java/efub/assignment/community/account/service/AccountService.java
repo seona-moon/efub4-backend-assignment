@@ -59,4 +59,9 @@ public class AccountService {
         Account account = findAccountById(member_id);
         account.withdrawAccount();
     }
+
+    @Transactional(readOnly = true) //닉네임으로 해당 계정 찾는 메소드
+    public Account findAccountByNickname(String name){
+        return accountRepository.findByNickname(name);
+    }
 }
