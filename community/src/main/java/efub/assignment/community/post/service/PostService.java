@@ -1,0 +1,53 @@
+package efub.assignment.community.post.service;
+
+
+import efub.assignment.community.account.domain.Account;
+import efub.assignment.community.account.service.AccountService;
+import efub.assignment.community.board.domain.Board;
+import efub.assignment.community.board.service.BoardService;
+import efub.assignment.community.post.PostRepository;
+import efub.assignment.community.post.domain.Post;
+import efub.assignment.community.post.dto.PostRequestDto;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional //해당 범위의 작업들을 하나의 트랜잭션으로 처리
+@RequiredArgsConstructor
+public class PostService {
+    private final PostRepository postRepository;
+    private final AccountService accountService;
+    private final BoardService boardService;
+
+    public Post createNewPost(PostRequestDto dto){ //새로운 글을 생성하는 메소드
+        Account account = accountService.findAccountByNickname(dto.getWriterNickname()); //dto의 accountId로 계정찾아서
+        Board board = boardService.findBoardById(Long.parseLong(dto.getBoardId())); //dto의 boardId로 계정찾아서
+        Post post = dto.toEntity(board,account);
+        Post savedPost = postRepository.save(post);  // 만든 post entity 정보를 DB에 저장
+        return savedPost; // 해당 post 반환
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAllPosts(){
+        List<Post> posts = postRepository.findAll();
+        return posts;
+    }
+
+    @Transactional(readOnly = true)
+    public long countAllPosts(){
+        return postRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public Post findPostById(Long postId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다.id="+postId));
+        return post;
+    }
+
+
+}
