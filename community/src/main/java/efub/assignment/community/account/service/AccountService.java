@@ -29,6 +29,11 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
+    public boolean existsByNickname(String nickname){
+        return accountRepository.existsByNickname(nickname);
+    }
+
+    @Transactional(readOnly = true)
     public Account findAccountById(Long id){
         return accountRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 Account를 찾을 수 없습니다. id="+id));
@@ -45,13 +50,13 @@ public class AccountService {
                 throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
             }
         }
+        if(existsByNickname(requestDto.getNickname())){ // 변경하려는 닉네임이 이미 등록되어 있는지
+            if(!member_id.equals(findAccountByNickname(requestDto.getNickname()).getAccountId())){  // 등록되어있는 이메일이 자신의 닉네임이 아니면 IllegalArgumentException "이미 존재하는 nickname입니다."
+                throw new IllegalArgumentException("이미 존재하는 nickname입니다."+requestDto.getNickname());
+            }
+        }
         Account account = findAccountById(member_id);
-        if(requestDto.getEmail()==null || requestDto.getPassword()==null) { // requestbody에 닉네임만 입력한 경우
-            account.updateAccount(requestDto.getNickname());
-        }
-        else{ // requestbody에 이메일, 닉네임, 비밀번호 모두 입력한 경우
-            account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword());
-        }
+        account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword());
         return account.getAccountId();
     }
 

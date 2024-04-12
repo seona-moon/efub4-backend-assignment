@@ -39,15 +39,15 @@ public class PostController {
 
         List<PostResponseDto> list = new ArrayList<>();
         List<Post> posts = postService.findAllPosts();
-        //posts.stream().forEach(post -> { //posts리스트를 스트림으로 변환 후, 각 글에 대해
-        //    PostResponseDto dto = PostResponseDto.from(post, post.getAccount().getNickname(), post.getBoard().getBoardId());
-        //    list.add(dto);
-        //});
-
-        for (Post post : posts){
+        posts.stream().forEach(post -> { //posts리스트를 스트림으로 변환 후, 각 글에 대해
             PostResponseDto dto = PostResponseDto.from(post, post.getAccount().getNickname(), post.getBoard().getBoardId());
             list.add(dto);
-        }
+        });
+
+        //for (Post post : posts){
+        //    PostResponseDto dto = PostResponseDto.from(post, post.getAccount().getNickname(), post.getBoard().getBoardId());
+        //    list.add(dto);
+        //}
         long count = postService.countAllPosts();
         return new AllPostsResponseDto(list,count);
     }
@@ -71,7 +71,7 @@ public class PostController {
     @DeleteMapping("/posts/{post_id}")
     @ResponseStatus(value = HttpStatus.OK)
     public String deletePost(@PathVariable(name="post_id")Long post_id,
-                           @RequestParam(name="account_id")Long account_id){
+                           @RequestParam(name="accountId")Long account_id){
         postService.deletePost(post_id,account_id);
 
         return "글을 삭제하였습니다.";
