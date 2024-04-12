@@ -29,11 +29,11 @@ public class PostService {
     private final BoardService boardService;
 
     public Post createNewPost(PostRequestDto dto){ //새로운 글을 생성하는 메소드
-        Account account = accountService.findAccountByNickname(dto.getWriterNickname()); //dto의 accountId로 계정찾아서
-        Board board = boardService.findBoardById(Long.parseLong(dto.getBoardId())); //dto의 boardId로 계정찾아서
+        Account account = accountService.findAccountByNickname(dto.getWriterNickname()); //dto의 accountId로 계정찾기
+        Board board = boardService.findBoardById(Long.parseLong(dto.getBoardId())); //dto의 boardId로 board찾기
         Post post = dto.toEntity(board,account);
-        Post savedPost = postRepository.save(post);  // 만든 post entity 정보를 DB에 저장
-        return savedPost; // 해당 post 반환
+        Post savedPost = postRepository.save(post);  // post 정보를 DB에 저장
+        return savedPost; // post 반환
     }
 
     @Transactional(readOnly = true)

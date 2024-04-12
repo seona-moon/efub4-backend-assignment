@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class BoardResponseDto {
-    private Long BoardId;
+    private Long boardId;
     private String boardName;
     private String boardDescription;
     private String boardNotice;
@@ -28,7 +28,7 @@ public class BoardResponseDto {
                 board.getBoardDescription(),
                 board.getBoardNotice(),
                 ownerNickname,
-                board.getCreatedDate(), //createdDated에 null이 들어가는데...
+                board.getCreatedDate(),
                 board.getModifiedDate()
         );
     }

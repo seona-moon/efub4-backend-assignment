@@ -30,7 +30,7 @@ public class PostResponseDto {
                 post.getContent(),
                 post.getWriterOpen(),
                 post.getCreatedDate(),
-                post.getCreatedDate()
+                post.getModifiedDate()
         );
     }
 }
