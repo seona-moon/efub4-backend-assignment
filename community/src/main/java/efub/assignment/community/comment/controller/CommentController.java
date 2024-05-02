@@ -20,8 +20,7 @@ public class CommentController {
     public CommentResponseDto updateComment(@PathVariable(name = "commentId") Long id,
                                             @RequestBody @Valid final CommentRequestDto requestdto,
                                             @RequestParam(name = "accountId") Long accountId){
-        Long commentId = commentService.updateComment(id, accountId, requestdto);
-        Comment comment = commentService.findCommentById(id);
+        Comment comment = commentService.updateComment(id, accountId, requestdto);
         return CommentResponseDto.of(comment);
     }
 

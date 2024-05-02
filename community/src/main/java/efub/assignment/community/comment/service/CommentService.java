@@ -58,14 +58,14 @@ public class CommentService {
     }
 
     /* 댓글 수정 */
-    public Long updateComment(Long id,Long accountId, CommentRequestDto requestdto) {
+    public Comment updateComment(Long id,Long accountId, CommentRequestDto requestdto) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 comment를 찾을 수 없습니다. id="+id));
         if(accountId!=comment.getWriter().getAccountId()){
             throw new CustomDeleteException(ErrorCode.PERMISSION_REJECTED_USER);
         }
         comment.update(requestdto);
-        return comment.getCommentId();
+        return comment;
     }
 
     /* 댓글 삭제 */
