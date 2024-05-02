@@ -34,8 +34,7 @@ public class BoardController {
     @ResponseStatus(value = HttpStatus.OK)
     public BoardResponseDto updateBoard(@PathVariable(name="board_id")Long board_id,
                                         @RequestBody @Valid final BoardUpdateDto dto){
-        Long boardId = boardService.updateBoard(board_id, dto);
-        Board board = boardService.findBoardById(boardId);
+        Board board = boardService.updateBoard(board_id, dto);
         return BoardResponseDto.from(board, board.getAccount().getNickname());
     }
 
