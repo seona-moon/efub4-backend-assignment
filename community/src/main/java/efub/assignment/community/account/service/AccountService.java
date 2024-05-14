@@ -41,7 +41,8 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public Account findAccountByEmail(String email){
-        return accountRepository.findByEmail(email);
+        return accountRepository.findByEmail(email)
+                .orElseThrow(()-> new EntityNotFoundException("해당 email을 가진 Account를 찾을 수 없습니다. email="+email));
     }
 
     public Long update(Long member_id, AccountUpdateRequestDto requestDto){
@@ -50,12 +51,12 @@ public class AccountService {
                 throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
             }
         }
-        if(existsByNickname(requestDto.getNickname())){ // 변경하려는 닉네임이 이미 등록되어 있는지
-            if(!member_id.equals(findAccountByNickname(requestDto.getNickname()).getAccountId())){  // 등록되어있는 이메일이 자신의 닉네임이 아니면 IllegalArgumentException "이미 존재하는 nickname입니다."
+        Account account = findAccountById(member_id);
+        if(account.getNickname() != requestDto.getNickname()){
+            if(existsByNickname(requestDto.getNickname())){
                 throw new IllegalArgumentException("이미 존재하는 nickname입니다."+requestDto.getNickname());
             }
         }
-        Account account = findAccountById(member_id);
         account.updateAccount(requestDto.getEmail(),requestDto.getNickname(),requestDto.getPassword());
         return account.getAccountId();
     }
@@ -67,6 +68,7 @@ public class AccountService {
 
     @Transactional(readOnly = true) //닉네임으로 해당 계정 찾는 메소드
     public Account findAccountByNickname(String name){
-        return accountRepository.findByNickname(name);
+        return accountRepository.findByNickname(name)
+                .orElseThrow(()-> new EntityNotFoundException("해당 nickname를 가진 Account를 찾을 수 없습니다. nickname="+name));
     }
 }

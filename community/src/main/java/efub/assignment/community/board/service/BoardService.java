@@ -35,12 +35,12 @@ public class BoardService {
         return board;
     }
 
-    public Long updateBoard(Long boardId, BoardUpdateDto dto){
+    public Board updateBoard(Long boardId, BoardUpdateDto dto){
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 board를 찾을 수 없습니다.id="+boardId));
         Account account = accountService.findAccountByNickname(dto.getOwnerNickname());
         board.update(account);
-        return board.getBoardId();
+        return board;
     }
 
     public void deleteBoard(Long boardId, Long accountId){
