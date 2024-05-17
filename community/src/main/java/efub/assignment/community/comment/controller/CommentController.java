@@ -20,6 +20,7 @@ public class CommentController {
     private final CommentService commentService;
     private final CommentHeartService commentHeartService;
 
+    // 댓글 수정
     @PutMapping
     public CommentResponseDto updateComment(@PathVariable(name = "commentId") Long id,
                                             @RequestBody @Valid final CommentRequestDto requestdto,
@@ -28,6 +29,7 @@ public class CommentController {
         return CommentResponseDto.of(comment);
     }
 
+    // 댓글 삭제
     @DeleteMapping
     public String deleteComment(@PathVariable(name = "commentId") Long id,
                                 @RequestParam(name = "accountId") Long accountId){
