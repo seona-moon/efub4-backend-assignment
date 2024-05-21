@@ -59,19 +59,17 @@ public class CommentService {
 
     /* 댓글 수정 */
     public Comment updateComment(Long id,Long accountId, CommentRequestDto requestdto) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 comment를 찾을 수 없습니다. id="+id));
+        Comment comment = findCommentById(id);
         if(accountId!=comment.getWriter().getAccountId()){
             throw new CustomDeleteException(ErrorCode.PERMISSION_REJECTED_USER);
         }
-        comment.update(requestdto);
+        comment.updateComment(requestdto.getContent());
         return comment;
     }
 
     /* 댓글 삭제 */
     public void deleteComment(Long id, Long accountId){
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("해당 id를 가진 comment를 찾을 수 없습니다. id="+id));
+        Comment comment = findCommentById(id);
         if(accountId!=comment.getWriter().getAccountId()){
             throw new CustomDeleteException(ErrorCode.PERMISSION_REJECTED_USER);
         }

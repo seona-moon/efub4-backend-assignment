@@ -48,6 +48,12 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    /* @OneToMany: 한 개의 게시글에 여러 개의 좋아요가 존재할 수 있음 */
+    /* mappedBy = 'post': 'Heart가 'post_id' 값을 참조 */
+    /* 외래 키의 주인이 Post이므로, 연관관계의 주인을 Post로 명시 */
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostHeart> postHeartList = new ArrayList<>();
+
     @Builder
     public Post(Account account, Board board, String title, String content, String writerOpen){
         this.account = account;

@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +35,9 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "post_id", updatable = false)
     private Post post;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<CommentHeart> commentLikeList = new ArrayList<>();
+
     @Builder
     public Comment(String content, Account writer, Post post){
         this.content = content;
@@ -39,7 +45,7 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
     }
 
-    public void update(CommentRequestDto requestDto){
-        this.content = requestDto.getContent();
+    public void updateComment(String content){
+        this.content = content;
     }
 }
