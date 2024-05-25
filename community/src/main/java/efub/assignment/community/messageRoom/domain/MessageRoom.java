@@ -21,23 +21,16 @@ public class MessageRoom extends BaseTimeEntity {
     @Column(name = "messageRoom_id", updatable = false)
     private Long messageRoomId;
 
-    // 처음 보낸 사람과 처음 받은 사람은 처음 message에서 참조하는게 나을까 아님 colum으로 저장하는 게 나을까........
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "send_account_id", updatable = false)
     private Account firstSendAccount;
+    
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "receive_account_id", updatable = false)
     private Account firstReceiveAccount;
 
-    //첫쪽지
-    // String으로?? 어떻게 해야 되지..?
-    //@OneToOne
-    //@JoinColumn(name = "message_id", updatable = false)
-    //private Message firstMessage;
-
-    //@Column(nullable = false, length = 1000)
-    //private String firstContent;
 
     //쪽지가 시작된 글
     @ManyToOne(fetch= FetchType.LAZY)
