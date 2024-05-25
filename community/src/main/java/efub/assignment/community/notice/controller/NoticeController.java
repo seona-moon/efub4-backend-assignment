@@ -21,18 +21,16 @@ public class NoticeController {
     // 알림 조회 api
     @GetMapping("/commentNotices")
     @ResponseStatus(HttpStatus.OK)
-    public AllNoticeResponseDto getAllCommentNotice(){
-        List<Notice> notices = noticeService.findAllCommentNotices();
+    public AllNoticeResponseDto getAllCommentNotice(@RequestParam(name="accountId")Long accountId){
+        List<Notice> notices = noticeService.findAllCommentNotices(accountId);
         return new AllNoticeResponseDto(notices.stream().map(NoticeResponseDto::of).collect(Collectors.toList()));
     }
 
     // 알림 조회 api
     @GetMapping("/messageRoomNotices")
     @ResponseStatus(HttpStatus.OK)
-    public AllNoticeResponseDto getAllMessageRoomNotice(){
-        List<Notice> notices = noticeService.findAllMessageRoomNotices();
+    public AllNoticeResponseDto getAllMessageRoomNotice(@RequestParam(name="accountId")Long accountId){
+        List<Notice> notices = noticeService.findAllMessageRoomNotices(accountId);
         return new AllNoticeResponseDto(notices.stream().map(NoticeResponseDto::of).collect(Collectors.toList()));
     }
-
-    // 알림 생성 api
 }

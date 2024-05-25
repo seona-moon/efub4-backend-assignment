@@ -11,6 +11,7 @@ import efub.assignment.community.messageRoom.dto.MessageRoomIdResponseDto;
 import efub.assignment.community.messageRoom.dto.MessageRoomRequestDto;
 import efub.assignment.community.messageRoom.dto.MessageRoomResponseDto;
 import efub.assignment.community.messageRoom.service.MessageRoomService;
+import efub.assignment.community.notice.service.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class MessageRoomController {
     private final AccountService accountService;
     private final MessageRoomService messageRoomService;
     private final MessageService messageService;
+    private final NoticeService noticeService;
 
     // 쪽지방 생성 api
     @PostMapping
@@ -33,6 +35,10 @@ public class MessageRoomController {
     public MessageRoomResponseDto createMessageRoom(@RequestBody @Valid final MessageRoomRequestDto requestDto){
         //messageRoom 생성
         MessageRoom messageRoom = messageRoomService.createMessageRoom(requestDto);
+        // 알림 생성
+        noticeService.createMessageRoomNotice(requestDto.getFirstSendAccountId());
+        noticeService.createMessageRoomNotice(requestDto.getFirstReceiveAccountId());
+
         // 첫 쪽지 생성
         messageService.createFirstMessage(messageRoom.getMessageRoomId(),requestDto);
 

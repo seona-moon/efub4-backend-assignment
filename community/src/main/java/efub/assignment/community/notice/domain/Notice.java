@@ -1,5 +1,6 @@
 package efub.assignment.community.notice.domain;
 
+import efub.assignment.community.account.domain.Account;
 import efub.assignment.community.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +14,10 @@ public class Notice extends BaseTimeEntity {
     @Column(name = "notice_id", updatable = false)
     private Long noticeId;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     @Column(nullable = false)
     private String type;
 
@@ -23,9 +28,11 @@ public class Notice extends BaseTimeEntity {
     private String boardName;
 
     @Builder
-    public Notice(String type, String content, String boardName){
+    public Notice(String type, String content, String boardName, Account account){
+        this.account = account;
         this.type = type;
         this.content = content;
         this.boardName = boardName;
     }
+
 }

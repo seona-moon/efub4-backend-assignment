@@ -1,5 +1,6 @@
 package efub.assignment.community.notice.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import efub.assignment.community.notice.domain.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class NoticeResponseDto {
 
     private String type;
