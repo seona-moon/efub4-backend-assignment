@@ -2,6 +2,7 @@ package efub.assignment.community.account.domain;
 
 import efub.assignment.community.comment.domain.Comment;
 import efub.assignment.community.global.entity.BaseTimeEntity;
+import efub.assignment.community.messageRoom.domain.MessageRoom;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

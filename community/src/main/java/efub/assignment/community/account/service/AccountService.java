@@ -45,13 +45,13 @@ public class AccountService {
                 .orElseThrow(()-> new EntityNotFoundException("해당 email을 가진 Account를 찾을 수 없습니다. email="+email));
     }
 
-    public Long update(Long member_id, AccountUpdateRequestDto requestDto){
+    public Long update(Long account_id, AccountUpdateRequestDto requestDto){
         if(existsByEmail(requestDto.getEmail())){ // 변경하려는 이메일이 이미 등록되어 있는지
-            if(!member_id.equals(findAccountByEmail(requestDto.getEmail()).getAccountId())){  // 등록되어있는 이메일이 자신의 계정 이메일이 아니면 IllegalArgumentException "이미 존재하는 email입니다."
+            if(!account_id.equals(findAccountByEmail(requestDto.getEmail()).getAccountId())){  // 등록되어있는 이메일이 자신의 계정 이메일이 아니면 IllegalArgumentException "이미 존재하는 email입니다."
                 throw new IllegalArgumentException("이미 존재하는 email입니다."+requestDto.getEmail());
             }
         }
-        Account account = findAccountById(member_id);
+        Account account = findAccountById(account_id);
         if(account.getNickname() != requestDto.getNickname()){
             if(existsByNickname(requestDto.getNickname())){
                 throw new IllegalArgumentException("이미 존재하는 nickname입니다."+requestDto.getNickname());
@@ -61,8 +61,8 @@ public class AccountService {
         return account.getAccountId();
     }
 
-    public void withdraw(Long member_id){
-        Account account = findAccountById(member_id);
+    public void withdraw(Long account_id){
+        Account account = findAccountById(account_id);
         account.withdrawAccount();
     }
 

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
-    List<Notice> findByAccountAndType(Account account, String type);
+    List<Notice> findByAccount(Account account);
 }

@@ -4,23 +4,17 @@ import efub.assignment.community.account.domain.Account;
 import efub.assignment.community.account.service.AccountService;
 import efub.assignment.community.exception.CustomDeleteException;
 import efub.assignment.community.exception.ErrorCode;
-import efub.assignment.community.message.domain.Message;
 import efub.assignment.community.messageRoom.domain.MessageRoom;
-import efub.assignment.community.messageRoom.dto.GetMessageRoomIdRequestDto;
 import efub.assignment.community.messageRoom.dto.MessageRoomRequestDto;
-import efub.assignment.community.messageRoom.dto.MessageRoomResponseDto;
 import efub.assignment.community.messageRoom.repository.MessageRoomRepository;
 import efub.assignment.community.post.domain.Post;
 import efub.assignment.community.post.service.PostService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -46,18 +40,12 @@ public class MessageRoomService {
 
     //messageRoom 여부 조회
     @Transactional(readOnly = true)
-    public MessageRoom getMessageRoomId(GetMessageRoomIdRequestDto dto) {
+    public MessageRoom getMessageRoomId(Long viewAccountId, Long receiveAccountId, Long postId) {
 
-        Account viewAccount = accountService.findAccountById(dto.getVeiwAccountId());
-        Account receiveAccount = accountService.findAccountById(dto.getReceiveAccountId());
+        Account viewAccount = accountService.findAccountById(viewAccountId);
+        Account receiveAccount = accountService.findAccountById(receiveAccountId);
 
-        if(messageRoomRepository.findByFirstSendAccountAndFirstReceiveAccount(viewAccount, receiveAccount).isEmpty()){
-            return messageRoomRepository.findByFirstSendAccountAndFirstReceiveAccount(receiveAccount,viewAccount)
-                    .orElseGet(()->null);
-            }
-        else
-            return messageRoomRepository.findByFirstSendAccountAndFirstReceiveAccount(viewAccount, receiveAccount)
-                    .orElseGet(()->null);
+        return messageRoomRepository.findByFirstSendAccountAndFirstReceiveAccount(viewAccount, receiveAccount).orElseGet(()->null);
     }
 
     //messageRoom 삭제
@@ -104,7 +92,10 @@ public class MessageRoomService {
             return messageRoom.getFirstReceiveAccount().getAccountId();
         }
         // 쪽지방에 account가 포함 되어있지 않을 때
-        else throw new IllegalArgumentException("해당 accountId가 쪽지방에 포함되어있지 않습니다.");
+        // 쪽지방에 포함된 account만 조회할 수 있게 권한 확인
+        else {
+            throw new CustomDeleteException(ErrorCode.PERMISSION_REJECTED_USER);
+        }
     }
 
 }

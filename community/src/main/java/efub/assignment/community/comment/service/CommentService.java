@@ -23,6 +23,7 @@ public class CommentService {
 
     private final AccountService accountService;
     private final PostService postService;
+    private final PostService noticeService;
     private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
@@ -43,6 +44,7 @@ public class CommentService {
                 .post(post)
                 .build();
         commentRepository.save(comment);
+
 
         return comment;
     }

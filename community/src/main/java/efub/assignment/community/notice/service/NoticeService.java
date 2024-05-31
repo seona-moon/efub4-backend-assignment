@@ -23,20 +23,6 @@ public class NoticeService {
     private final AccountService accountService;
     private final PostService postService;
 
-    // commentNotice 찾기
-    @Transactional(readOnly = true)
-    public List<Notice> findAllCommentNotices(Long accountId) {
-        Account account = accountService.findAccountById(accountId);
-        return noticeRepository.findByAccountAndType(account,"댓글");
-    }
-
-    //messageRoomNotice 찾기
-    @Transactional(readOnly = true)
-    public List<Notice> findAllMessageRoomNotices(Long accountId) {
-        Account account = accountService.findAccountById(accountId);
-        return noticeRepository.findByAccountAndType(account,"쪽지방");
-    }
-
     //notice 생성
     public void createCommentNotice(Long postId, String content ){
         Post post = postService.findPostById(postId);
@@ -49,6 +35,7 @@ public class NoticeService {
         noticeRepository.save(notice);
     }
 
+    // 쪽지방 생성 알림 생성
     public void createMessageRoomNotice(Long accountId){
         Account account = accountService.findAccountById(accountId);
         Notice notice = Notice.builder()
@@ -57,5 +44,12 @@ public class NoticeService {
                 .content("새로운 쪽지방이 생겼어요")
                 .build();
         noticeRepository.save(notice);
+    }
+
+    // 모든 알림 조회
+    @Transactional(readOnly = true)
+    public List<Notice> findAllNotices(Long accountId) {
+        Account account = accountService.findAccountById(accountId);
+        return noticeRepository.findByAccount(account);
     }
 }
