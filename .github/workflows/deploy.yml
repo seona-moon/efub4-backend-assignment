@@ -23,15 +23,17 @@ jobs:
 
       - name: make application.yml
         run: |
-          mkdir -p ./community/src/main/resources
-          cd ./community/src/main/resources
+          mkdir ./blog/src/main/resources 
+          cd ./blog/src/main/resources
           touch ./application.yml
           echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
+
       - name: Build with Gradle
         run: |
-          cd ./community
+          cd ./blog
           chmod +x ./gradlew
           ./gradlew build -x test
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with :
@@ -42,7 +44,7 @@ jobs:
         uses : docker/build-push-action@v2
         with :
           context: ./community
-          file : ./community/Dockerfile
+          file : ./blog/Dockerfile
           platforms: linux/amd64/v8
           # 빌드 후 Docker 레지스트리에 푸시할지 여부 지정
           push: true
