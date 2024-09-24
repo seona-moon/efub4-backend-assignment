@@ -22,8 +22,7 @@ jobs:
           java-version: '17'
 
       - name: make application.yml
-        run: |
-          mkdir ./community/src/main/resources 
+        run: | 
           cd ./community/src/main/resources
           touch ./application.yml
           echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
