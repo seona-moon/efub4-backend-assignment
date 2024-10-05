@@ -4,6 +4,7 @@ import efub.assignment.community.comment.domain.Comment;
 import efub.assignment.community.global.entity.BaseTimeEntity;
 import efub.assignment.community.messageRoom.domain.MessageRoom;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Account extends BaseTimeEntity {
     private String password;
 
     @Column(nullable = false, updatable = true, length = 16)
+    @NotBlank
     private String nickname;
 
     @Column(nullable = false, length = 20)
